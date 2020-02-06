@@ -6,19 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import static ru.mail.dimaushenko.constants.PropertyConstants.SQL_COLUMN_TABLE_ROLE_ID;
-import static ru.mail.dimaushenko.constants.PropertyConstants.SQL_COLUMN_TABLE_USER_CREATED_BY;
-import static ru.mail.dimaushenko.constants.PropertyConstants.SQL_COLUMN_TABLE_USER_ID;
-import static ru.mail.dimaushenko.constants.PropertyConstants.SQL_COLUMN_TABLE_USER_PASSWORD;
-import static ru.mail.dimaushenko.constants.PropertyConstants.SQL_COLUMN_TABLE_USER_USERNAME;
-import static ru.mail.dimaushenko.constants.PropertyConstants.SQL_REQUEST_TABLE_USER_INSERT;
-import static ru.mail.dimaushenko.constants.PropertyConstants.SQL_REQUEST_TABLE_USER_SELECT_ALL;
 
 import ru.mail.dimaushenko.repository.UserRepository;
 import ru.mail.dimaushenko.repository.model.Role;
 import ru.mail.dimaushenko.repository.model.User;
 import ru.mail.dimaushenko.utils.PropertyUtil;
 import ru.mail.dimaushenko.utils.impl.PropertyUtilConstantsImpl;
+
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_ROLE_ID;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_USER_CREATED_BY;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_USER_ID;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_USER_PASSWORD;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_USER_USERNAME;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_TABLE_USER_INSERT;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_TABLE_USER_SELECT_ALL;
 
 public class UserRepositoryImpl extends GeneralRepositoryImpl<User> implements UserRepository {
 

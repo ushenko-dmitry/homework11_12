@@ -1,6 +1,6 @@
 package ru.mail.dimaushenko.constants;
 
-public interface PropertyConstants {
+public interface SqlConstants {
 
     String SQL_REQUEST_DATABASE_CREATE = "sql.request.database.homework11_12.create";
     String SQL_REQUEST_DATABASE_DROP = "sql.request.database.homework11_12.drop";

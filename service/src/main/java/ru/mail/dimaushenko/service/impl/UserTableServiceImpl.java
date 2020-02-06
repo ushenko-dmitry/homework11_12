@@ -13,8 +13,8 @@ import ru.mail.dimaushenko.utils.impl.PropertyUtilConstantsImpl;
 import ru.mail.dimaushenko.repository.TableRepository;
 import ru.mail.dimaushenko.repository.impl.TableRepositoryImpl;
 
-import static ru.mail.dimaushenko.constants.PropertyConstants.SQL_REQUEST_TABLE_USER_INSERT;
-import static ru.mail.dimaushenko.constants.PropertyConstants.SQL_REQUEST_TABLE_USER_DROP;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_TABLE_USER_INSERT;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_TABLE_USER_DROP;
 
 public class UserTableServiceImpl implements TableService {
 
