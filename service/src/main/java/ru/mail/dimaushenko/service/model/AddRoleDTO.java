@@ -1,6 +1,6 @@
 package ru.mail.dimaushenko.service.model;
 
-public class addRoleDTO {
+public class AddRoleDTO {
 
     private String name;
     private String description;

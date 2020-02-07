@@ -5,19 +5,19 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_TABLE_USER_CREATE;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_TABLE_ROLE_CREATE;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_TABLE_ROLE_DROP;
 
+import ru.mail.dimaushenko.repository.TableRepository;
 import ru.mail.dimaushenko.repository.impl.ConnectionPoolImpl;
+import ru.mail.dimaushenko.repository.impl.TableRepositoryImpl;
 import ru.mail.dimaushenko.service.TableService;
 import ru.mail.dimaushenko.utils.PropertyUtil;
 import ru.mail.dimaushenko.utils.impl.PropertyUtilConstantsImpl;
-import ru.mail.dimaushenko.repository.TableRepository;
-import ru.mail.dimaushenko.repository.impl.TableRepositoryImpl;
 
-import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_TABLE_USER_DROP;
-import static ru.mail.dimaushenko.constants.SqlConstants.SQL_TABLE_NAME_USER;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_TABLE_NAME_ROLE;
 
-public class UserTableServiceImpl implements TableService {
+public class RoleTableServiceImpl implements TableService {
 
     private static TableService instance = null;
 
@@ -25,14 +25,14 @@ public class UserTableServiceImpl implements TableService {
     private final PropertyUtil propertyUtil;
     private final TableRepository tableRepository;
 
-    private UserTableServiceImpl() {
+    private RoleTableServiceImpl() {
         propertyUtil = PropertyUtilConstantsImpl.getInstance();
         tableRepository = TableRepositoryImpl.getInstance();
     }
 
     public static TableService getInstance() {
         if (instance == null) {
-            instance = new UserTableServiceImpl();
+            instance = new RoleTableServiceImpl();
         }
         return instance;
     }
@@ -42,7 +42,8 @@ public class UserTableServiceImpl implements TableService {
         try ( Connection connection = ConnectionPoolImpl.getInstance().getConnection()) {
             connection.setAutoCommit(false);
             try {
-                tableRepository.executeQuery(connection, propertyUtil.getProperty(SQL_REQUEST_TABLE_USER_CREATE));
+                String query = propertyUtil.getProperty(SQL_REQUEST_TABLE_ROLE_CREATE);
+                tableRepository.executeQuery(connection, query);
                 connection.commit();
                 return true;
             } catch (SQLException ex) {
@@ -60,7 +61,8 @@ public class UserTableServiceImpl implements TableService {
         try ( Connection connection = ConnectionPoolImpl.getInstance().getConnection()) {
             connection.setAutoCommit(false);
             try {
-                tableRepository.executeQuery(connection, propertyUtil.getProperty(SQL_REQUEST_TABLE_USER_DROP));
+                String query = propertyUtil.getProperty(SQL_REQUEST_TABLE_ROLE_DROP);
+                tableRepository.executeQuery(connection, query);
                 connection.commit();
                 return true;
             } catch (SQLException ex) {
@@ -79,7 +81,8 @@ public class UserTableServiceImpl implements TableService {
         try ( Connection connection = ConnectionPoolImpl.getInstance().getConnection()) {
             connection.setAutoCommit(false);
             try {
-                isTableFound = tableRepository.isTableFound(connection, propertyUtil.getProperty(SQL_TABLE_NAME_USER));
+                String tableName = propertyUtil.getProperty(SQL_TABLE_NAME_ROLE);
+                isTableFound = tableRepository.isTableFound(connection, tableName);
                 connection.commit();
             } catch (SQLException ex) {
                 logger.error(ex.getMessage(), ex);

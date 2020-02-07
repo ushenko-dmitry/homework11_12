@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_ROLE_DESCRIPTION;
 
 import ru.mail.dimaushenko.repository.UserRepository;
 import ru.mail.dimaushenko.repository.model.Role;
@@ -14,6 +15,7 @@ import ru.mail.dimaushenko.utils.PropertyUtil;
 import ru.mail.dimaushenko.utils.impl.PropertyUtilConstantsImpl;
 
 import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_ROLE_ID;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_ROLE_NAME;
 import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_USER_CREATED_BY;
 import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_USER_ID;
 import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_USER_PASSWORD;
@@ -43,23 +45,22 @@ public class UserRepositoryImpl extends GeneralRepositoryImpl<User> implements U
         try ( PreparedStatement statement = connection.prepareCall(propertyUtil.getProperty(SQL_REQUEST_TABLE_USER_INSERT))) {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
-            statement.setDate(3, user.getCreatedBy());
-            statement.setInt(4, user.getRole().getId());
+            statement.setInt(3, user.getRole().getId());
             statement.execute();
         }
     }
 
     @Override
     public List<User> getAll(Connection connection) throws SQLException {
-        List<User> userGroups = new ArrayList();
+        List<User> users = new ArrayList();
         try ( PreparedStatement statement = connection.prepareCall(propertyUtil.getProperty(SQL_REQUEST_TABLE_USER_SELECT_ALL))) {
             try ( ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
-                    userGroups.add(getUser(result));
+                    users.add(getUser(result));
                 }
             }
         }
-        return userGroups;
+        return users;
     }
 
     @Override
@@ -86,10 +87,12 @@ public class UserRepositoryImpl extends GeneralRepositoryImpl<User> implements U
         user.setUsername(result.getString(propertyUtil.getProperty(SQL_COLUMN_TABLE_USER_USERNAME)));
         user.setPassword(result.getString(propertyUtil.getProperty(SQL_COLUMN_TABLE_USER_PASSWORD)));
         user.setCreatedBy(result.getDate(propertyUtil.getProperty(SQL_COLUMN_TABLE_USER_CREATED_BY)));
-        
+
         Role role = new Role();
-        
+
         role.setId(result.getInt(propertyUtil.getProperty(SQL_COLUMN_TABLE_ROLE_ID)));
+        role.setName(result.getString(propertyUtil.getProperty(SQL_COLUMN_TABLE_ROLE_NAME)));
+        role.setDescription(result.getString(propertyUtil.getProperty(SQL_COLUMN_TABLE_ROLE_DESCRIPTION)));
         return user;
     }
 

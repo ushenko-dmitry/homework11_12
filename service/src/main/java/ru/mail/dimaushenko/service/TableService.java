@@ -5,5 +5,7 @@ public interface TableService {
     public boolean createTable();
 
     public boolean removeTable();
+    
+    public boolean isTableFound();
 
 }

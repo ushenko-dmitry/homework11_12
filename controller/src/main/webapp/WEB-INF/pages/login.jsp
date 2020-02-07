@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,12 +7,12 @@
         <title>Login Page</title>
     </head>
     <body>
-        <h1>Login</h1>
+        <h1>Log In</h1>
         <form method="POST" action="/login">
-            <input type="text" name="username" placeholder="username"/>
-            <input type="password" name="password" placeholder="password"/>
-            <input type="submit" name="login"/>
-            <a href="">SingIn</a>
+            <input type="text" name="username" placeholder="username"/><br/>
+            <input type="password" name="password" placeholder="password"/><br/>
+            <input type="submit" name="login" value="Log In"/><br/>
+            <a href="<c:url value="/signin"/>">Sign In</a>
         </form>
     </body>
 </html>

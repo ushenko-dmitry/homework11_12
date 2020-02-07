@@ -4,6 +4,8 @@ public interface SqlConstants {
 
     String SQL_REQUEST_DATABASE_CREATE = "sql.request.database.homework11_12.create";
     String SQL_REQUEST_DATABASE_DROP = "sql.request.database.homework11_12.drop";
+    String SQL_REQUEST_DATABASE_SHOW = "sql.request.database.homework11_12.show";
+    String SQL_REQUEST_DATABASE_GET_TABLES = "sql.request.database.homework11_12.gettables";
 
     String SQL_REQUEST_TABLE_USER_CREATE = "sql.request.table.user.create";
     String SQL_REQUEST_TABLE_USER_DROP = "sql.request.table.user.drop";
@@ -15,6 +17,14 @@ public interface SqlConstants {
     String SQL_REQUEST_TABLE_ROLE_DROP = "sql.request.table.role.drop";
     String SQL_REQUEST_TABLE_ROLE_INSERT = "sql.request.table.role.insert";
     String SQL_REQUEST_TABLE_ROLE_SELECT_ALL = "sql.request.table.role.select_all";
+
+    String SQL_DATABASE_NAME = "sql.database.name";
+
+    String SQL_TABLE_NAME_USER = "sql.table_name.user";
+    String SQL_TABLE_NAME_ROLE = "sql.table_name.role";
+
+    String SQL_COLUMN_DATABASE = "sql.column.database";
+    String SQL_COLUMN_DATABASE_TABLES = "sql.column.database.tables";
 
     String SQL_COLUMN_TABLE_USER_ID = "sql.column.table.user.id";
     String SQL_COLUMN_TABLE_USER_USERNAME = "sql.column.table.user.username";

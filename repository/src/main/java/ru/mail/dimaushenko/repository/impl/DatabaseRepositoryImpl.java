@@ -4,31 +4,29 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import ru.mail.dimaushenko.repository.TableRepository;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_DATABASE;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_DATABASE_SHOW;
+import ru.mail.dimaushenko.repository.DatabaseRepository;
 import ru.mail.dimaushenko.utils.PropertyUtil;
 import ru.mail.dimaushenko.utils.impl.PropertyUtilConstantsImpl;
 
-import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_DATABASE_TABLES;
-import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_DATABASE_GET_TABLES;
+public class DatabaseRepositoryImpl implements DatabaseRepository{
 
-public class TableRepositoryImpl implements TableRepository {
-
-    private static TableRepository instance = null;
+    private static DatabaseRepository instance = null;
 
     private final PropertyUtil propertyUtil;
 
-    private TableRepositoryImpl() {
+    private DatabaseRepositoryImpl() {
         propertyUtil = PropertyUtilConstantsImpl.getInstance();
     }
 
-    public static TableRepository getInstance() {
+    public static DatabaseRepository getInstance() {
         if (instance == null) {
-            instance = new TableRepositoryImpl();
+            instance = new DatabaseRepositoryImpl();
         }
         return instance;
     }
-
+    
     @Override
     public void executeQuery(Connection connection, String query) throws SQLException {
         try ( PreparedStatement statement = connection.prepareStatement(query)) {
@@ -37,12 +35,12 @@ public class TableRepositoryImpl implements TableRepository {
     }
 
     @Override
-    public boolean isTableFound(Connection connection, String tableName) throws SQLException {
-        try ( PreparedStatement statement = connection.prepareCall(propertyUtil.getProperty(SQL_REQUEST_DATABASE_GET_TABLES))) {
+    public boolean isDatabaseFound(Connection connection, String databaseName) throws SQLException {
+        try ( PreparedStatement statement = connection.prepareCall(propertyUtil.getProperty(SQL_REQUEST_DATABASE_SHOW))) {
             try ( ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
-                    String columnName = propertyUtil.getProperty(SQL_COLUMN_DATABASE_TABLES);
-                    if (result.getString(columnName).equals(tableName)) {
+                    String columnName = propertyUtil.getProperty(SQL_COLUMN_DATABASE);
+                    if (result.getString(columnName).equals(databaseName)) {
                         return true;
                     }
                 }
@@ -50,5 +48,5 @@ public class TableRepositoryImpl implements TableRepository {
         }
         return false;
     }
-
+    
 }
