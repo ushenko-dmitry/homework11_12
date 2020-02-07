@@ -89,10 +89,10 @@ public class UserRepositoryImpl extends GeneralRepositoryImpl<User> implements U
         user.setCreatedBy(result.getDate(propertyUtil.getProperty(SQL_COLUMN_TABLE_USER_CREATED_BY)));
 
         Role role = new Role();
-
         role.setId(result.getInt(propertyUtil.getProperty(SQL_COLUMN_TABLE_ROLE_ID)));
         role.setName(result.getString(propertyUtil.getProperty(SQL_COLUMN_TABLE_ROLE_NAME)));
         role.setDescription(result.getString(propertyUtil.getProperty(SQL_COLUMN_TABLE_ROLE_DESCRIPTION)));
+        user.setRole(role);
         return user;
     }
 
