@@ -3,7 +3,6 @@ package ru.mail.dimaushenko.controller.filter;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -30,9 +29,8 @@ public class LoginFilter implements Filter {
             String username = httpServletRequest.getParameter(PARAMETER_USERNAME);
             if (userService.isUserFoundByUsername(username)) {
                 chain.doFilter(req, resp);
-                ((HttpServletResponse) resp).sendRedirect(httpServletRequest.getContextPath() + "/");
-//                RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/");
-//                dispatcher.forward(req, resp);
+                HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
+                httpServletResponse.sendRedirect(httpServletRequest.getContextPath());
             }
 
         }

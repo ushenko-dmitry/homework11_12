@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(addUserDTO.getPassword());
 
         Role role = new Role();
-        role.setId(addUserDTO.getRole());
+        role.setId(addUserDTO.getRoleId());
         user.setRole(role);
 
         return user;

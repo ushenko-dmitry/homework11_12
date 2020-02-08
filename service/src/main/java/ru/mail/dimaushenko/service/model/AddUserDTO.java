@@ -22,11 +22,11 @@ public class AddUserDTO {
         this.password = password;
     }
 
-    public Integer getRole() {
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRole(Integer role) {
+    public void setRoleId(Integer role) {
         this.roleId = role;
     }
 }

@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,11 +45,9 @@ public class RoleServiceImpl implements RoleService {
                 Role role = convertAddRoleDTOToRole(addRoleDTO);
                 roleRepository.addEntity(connection, role);
                 connection.commit();
-                System.out.println("\n\nCOMMIT\n\n");
             } catch (SQLException ex) {
                 connection.rollback();
                 logger.error(ex.getMessage(), ex);
-                System.out.println("\n\nROLLBACK\n\n");
             }
         } catch (SQLException ex) {
             logger.error(ex.getMessage(), ex);

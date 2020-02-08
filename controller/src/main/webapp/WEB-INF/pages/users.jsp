@@ -27,5 +27,8 @@
                 </tr>
             </c:forEach>
         </table>
+        <form method="POST" action="/homework11_12/logout">
+            <input type="submit" value="log out"/>
+        </form>
     </body>
 </html>
