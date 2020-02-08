@@ -1,4 +1,4 @@
-package ru.mail.dimaushenko.controller.constants;
+package ru.mail.dimaushenko.constants;
 
 public class Pages {
     

@@ -55,4 +55,13 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>ru.mail.dimaushenko.controller.filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <servlet-name>LoginServlet</servlet-name>
+    </filter-mapping>
+    
 </web-app>

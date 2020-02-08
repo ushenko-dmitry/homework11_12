@@ -22,6 +22,8 @@ import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_USER_P
 import static ru.mail.dimaushenko.constants.SqlConstants.SQL_COLUMN_TABLE_USER_USERNAME;
 import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_TABLE_USER_INSERT;
 import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_TABLE_USER_SELECT_ALL;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_TABLE_USER_SELECT_BY_USERNAME;
+import static ru.mail.dimaushenko.constants.SqlConstants.SQL_REQUEST_TABLE_USER_SELECT_BY_USERNAME_PASSWORD;
 
 public class UserRepositoryImpl extends GeneralRepositoryImpl<User> implements UserRepository {
 
@@ -42,7 +44,7 @@ public class UserRepositoryImpl extends GeneralRepositoryImpl<User> implements U
 
     @Override
     public void addEntity(Connection connection, User user) throws SQLException {
-        try ( PreparedStatement statement = connection.prepareCall(propertyUtil.getProperty(SQL_REQUEST_TABLE_USER_INSERT))) {
+        try (PreparedStatement statement = connection.prepareCall(propertyUtil.getProperty(SQL_REQUEST_TABLE_USER_INSERT))) {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
             statement.setInt(3, user.getRole().getId());
@@ -53,8 +55,8 @@ public class UserRepositoryImpl extends GeneralRepositoryImpl<User> implements U
     @Override
     public List<User> getAll(Connection connection) throws SQLException {
         List<User> users = new ArrayList();
-        try ( PreparedStatement statement = connection.prepareCall(propertyUtil.getProperty(SQL_REQUEST_TABLE_USER_SELECT_ALL))) {
-            try ( ResultSet result = statement.executeQuery()) {
+        try (PreparedStatement statement = connection.prepareCall(propertyUtil.getProperty(SQL_REQUEST_TABLE_USER_SELECT_ALL))) {
+            try (ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
                     users.add(getUser(result));
                 }
@@ -64,22 +66,32 @@ public class UserRepositoryImpl extends GeneralRepositoryImpl<User> implements U
     }
 
     @Override
-    public String getPasswordByUsername(String username) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User getUserAuthenticated(Connection connection, User user) throws SQLException{
+        try (PreparedStatement statement = connection.prepareCall(propertyUtil.getProperty(SQL_REQUEST_TABLE_USER_SELECT_BY_USERNAME_PASSWORD))) {
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getPassword());
+            try (ResultSet result = statement.executeQuery()) {
+                if (result.next()) {
+                    return getUser(result);
+                }
+            }
+        }
+        return null;
     }
 
-//    @Override
-//    public boolean isEntityFoundById(Connection connection, Integer id) throws SQLException {
-//        try (PreparedStatement statement = connection.prepareCall(propertyUtil.getProperty(SQL_REQUEST_IS_USER_FOUND_BY_ID))) {
-//            statement.setInt(1, id);
-//            try (ResultSet result = statement.executeQuery()) {
-//                if (result.next()) {
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
+    @Override
+    public boolean isUserFoundByUsername(Connection connection, String username) throws SQLException {
+        try (PreparedStatement statement = connection.prepareCall(propertyUtil.getProperty(SQL_REQUEST_TABLE_USER_SELECT_BY_USERNAME))) {
+            statement.setString(1, username);
+            try (ResultSet result = statement.executeQuery()) {
+                if (result.next()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     private User getUser(ResultSet result) throws SQLException {
         User user = new User();
 

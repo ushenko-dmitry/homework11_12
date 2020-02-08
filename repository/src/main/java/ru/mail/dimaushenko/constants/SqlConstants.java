@@ -11,7 +11,8 @@ public interface SqlConstants {
     String SQL_REQUEST_TABLE_USER_DROP = "sql.request.table.user.drop";
     String SQL_REQUEST_TABLE_USER_INSERT = "sql.request.table.user.insert";
     String SQL_REQUEST_TABLE_USER_SELECT_ALL = "sql.request.table.user.select.all";
-    String SQL_REQUEST_TABLE_USER_SELECT_PASSWORD_BY_USERNAME = "sql.request.table.user.select.password.by.username";
+    String SQL_REQUEST_TABLE_USER_SELECT_BY_USERNAME_PASSWORD = "sql.request.table.user.select.by.username_password";
+    String SQL_REQUEST_TABLE_USER_SELECT_BY_USERNAME = "sql.request.table.user.select.by.username";
 
     String SQL_REQUEST_TABLE_ROLE_CREATE = "sql.request.table.role.create";
     String SQL_REQUEST_TABLE_ROLE_DROP = "sql.request.table.role.drop";

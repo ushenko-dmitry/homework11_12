@@ -60,7 +60,9 @@ public class DatabaseServiceImpl implements DatabaseService {
             connection.setAutoCommit(false);
             try {
                 repository.executeQuery(connection, propertyUtil.getProperty(SQL_REQUEST_DATABASE_CREATE));
+                connection.commit();
             } catch (SQLException ex) {
+                connection.rollback();
                 java.util.logging.Logger.getLogger(DatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (SQLException ex) {

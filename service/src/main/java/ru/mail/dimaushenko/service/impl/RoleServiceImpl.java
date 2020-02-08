@@ -40,16 +40,20 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void addRole(AddRoleDTO addRoleDTO) {
-        try ( Connection connection = connectionPool.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 Role role = convertAddRoleDTOToRole(addRoleDTO);
                 roleRepository.addEntity(connection, role);
+                connection.commit();
+                System.out.println("\n\nCOMMIT\n\n");
             } catch (SQLException ex) {
                 connection.rollback();
+                logger.error(ex.getMessage(), ex);
+                System.out.println("\n\nROLLBACK\n\n");
             }
         } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(RoleServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex.getMessage(), ex);
         }
     }
 
@@ -57,7 +61,7 @@ public class RoleServiceImpl implements RoleService {
     public List<RoleDTO> getAllRoles() {
         List<RoleDTO> rolesDTO = new ArrayList();
 
-        try ( Connection connection = connectionPool.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 List<Role> roles = roleRepository.getAll(connection);

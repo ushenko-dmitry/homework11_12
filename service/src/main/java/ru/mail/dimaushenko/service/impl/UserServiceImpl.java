@@ -17,6 +17,7 @@ import ru.mail.dimaushenko.repository.model.Role;
 import ru.mail.dimaushenko.repository.model.User;
 import ru.mail.dimaushenko.service.UserService;
 import ru.mail.dimaushenko.service.model.AddUserDTO;
+import ru.mail.dimaushenko.service.model.GetUserDTO;
 import ru.mail.dimaushenko.service.model.UserDTO;
 
 public class UserServiceImpl implements UserService {
@@ -41,16 +42,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(AddUserDTO addUserDTO) {
-        try ( Connection connection = connectionPool.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 User user = convertAddUserDTOToUser(addUserDTO);
                 userRepository.addEntity(connection, user);
+                connection.commit();
             } catch (SQLException ex) {
                 connection.rollback();
+                logger.error(ex.getMessage(), ex);
             }
         } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(RoleServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex.getMessage(), ex);
         }
     }
 
@@ -58,7 +61,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> getAllUsers() {
         List<UserDTO> usersDTO = new ArrayList();
 
-        try ( Connection connection = connectionPool.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 List<User> user = userRepository.getAll(connection);
@@ -73,6 +76,44 @@ public class UserServiceImpl implements UserService {
         }
 
         return usersDTO;
+    }
+
+    @Override
+    public boolean isUserFoundByUsername(String username) {
+        try (Connection connection = connectionPool.getConnection()) {
+            try {
+                return userRepository.isUserFoundByUsername(connection, username);
+            } catch (SQLException ex) {
+                logger.error(ex.getMessage(), ex);
+                connection.rollback();
+            }
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage(), ex);
+        }
+        return false;
+    }
+
+    @Override
+    public UserDTO getUserAuthenticated(GetUserDTO getUserDTO) {
+        try (Connection connection = connectionPool.getConnection()) {
+            connection.setAutoCommit(false);
+            try {
+                User user = convertGetUserDTOToUser(getUserDTO);
+                user = userRepository.getUserAuthenticated(connection, user);
+                UserDTO userDTO = null;
+                if (user != null) {
+                    userDTO = convertUserToUserDTO(user);
+                }
+                connection.commit();
+                return userDTO;
+            } catch (SQLException ex) {
+                logger.error(ex.getMessage(), ex);
+                connection.rollback();
+            }
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage(), ex);
+        }
+        return null;
     }
 
     private User convertAddUserDTOToUser(AddUserDTO addUserDTO) {
@@ -111,6 +152,15 @@ public class UserServiceImpl implements UserService {
         }
 
         return usersDTO;
+    }
+
+    private User convertGetUserDTOToUser(GetUserDTO userDTO) {
+        User user = new User();
+
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
+
+        return user;
     }
 
 }
