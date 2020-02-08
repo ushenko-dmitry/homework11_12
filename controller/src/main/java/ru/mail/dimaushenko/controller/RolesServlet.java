@@ -14,13 +14,13 @@ import ru.mail.dimaushenko.service.model.RoleDTO;
 public class RolesServlet extends ManagerServlet {
 
     private final RoleService roleService = RoleServiceImpl.getInstance();
-    
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<RoleDTO> roles = roleService.getAllRoles();
-        
+
         req.setAttribute(ATTRIBUTE_NAME_ROLES, roles);
-        
+
         forward(PAGE_ROLES, req, resp);
     }
 

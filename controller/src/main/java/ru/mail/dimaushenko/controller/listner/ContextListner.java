@@ -11,37 +11,37 @@ import static ru.mail.dimaushenko.controller.constants.LogConstants.LOG_TABLE_RO
 import static ru.mail.dimaushenko.controller.constants.LogConstants.LOG_TABLE_USER_CREATED;
 import static ru.mail.dimaushenko.controller.constants.LogConstants.LOG_TABLE_USER_REMOVED;
 import ru.mail.dimaushenko.service.DatabaseService;
+import ru.mail.dimaushenko.service.RoleService;
 import ru.mail.dimaushenko.service.TableService;
 import ru.mail.dimaushenko.service.impl.DatabaseServiceImpl;
+import ru.mail.dimaushenko.service.impl.RoleServiceImpl;
 import ru.mail.dimaushenko.service.impl.RoleTableServiceImpl;
 import ru.mail.dimaushenko.service.impl.UserTableServiceImpl;
+import ru.mail.dimaushenko.service.model.AddRoleDTO;
 
 public class ContextListner implements ServletContextListener {
 
     private final TableService userTableService = UserTableServiceImpl.getInstance();
     private final TableService roleTableService = RoleTableServiceImpl.getInstance();
     private final DatabaseService databaseService = DatabaseServiceImpl.getInstance();
+    private final RoleService roleService = RoleServiceImpl.getInstance();
 
     private final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-
-        System.out.println("contextInitialized");
-        
-        if (!databaseService.isDatabaseFound()){
+        if (!databaseService.isDatabaseFound()) {
             createDatabase();
             createTables();
+            addRoles();
         }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        System.out.println("contextDestroyed");
-
         removeTables();
-
         createTables();
+        addRoles();
     }
 
     private void removeTables() {
@@ -80,10 +80,21 @@ public class ContextListner implements ServletContextListener {
             }
         }
     }
-    
+
     private void createDatabase() {
         databaseService.createDatabase();
         logger.info(LOG_DATABASE_CREATED);
+    }
+
+    private void addRoles() {
+        AddRoleDTO adminRole = new AddRoleDTO();
+        adminRole.setName("ADMIN");
+        adminRole.setDescription("ADMIN");
+        roleService.addRole(adminRole);
+        AddRoleDTO userRole = new AddRoleDTO();
+        userRole.setName("USER");
+        userRole.setDescription("USER");
+        roleService.addRole(userRole);
     }
 
 }
