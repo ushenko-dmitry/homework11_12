@@ -3,7 +3,6 @@ package ru.mail.dimaushenko.service.impl;
 import java.lang.invoke.MethodHandles;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,10 +45,10 @@ public class DatabaseServiceImpl implements DatabaseService {
             try {
                 return repository.isDatabaseFound(connection, propertyUtil.getProperty(SQL_DATABASE_NAME));
             } catch (SQLException ex) {
-                java.util.logging.Logger.getLogger(DatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex.getMessage(), ex);
             }
         } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(DatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex.getMessage(), ex);
         }
         return false;
     }
@@ -63,10 +62,10 @@ public class DatabaseServiceImpl implements DatabaseService {
                 connection.commit();
             } catch (SQLException ex) {
                 connection.rollback();
-                java.util.logging.Logger.getLogger(DatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex.getMessage(), ex);
             }
         } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(DatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex.getMessage(), ex);
         }
     }
 

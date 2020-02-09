@@ -1,6 +1,8 @@
 package ru.mail.dimaushenko.controller.filter;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -8,6 +10,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import static ru.mail.dimaushenko.constants.AttributeConstants.ATTRIBUTE_NAME_ERRORS;
+import static ru.mail.dimaushenko.constants.ErrorsConstants.ERROR_KEY_USERNAME_NOT_FOUND;
+import static ru.mail.dimaushenko.constants.ErrorsConstants.ERROR_VALUE_USERNAME_NOT_FOUND;
 import ru.mail.dimaushenko.service.UserService;
 import ru.mail.dimaushenko.service.impl.UserServiceImpl;
 import static ru.mail.dimaushenko.constants.ParameterConstants.PARAMETER_USERNAME;
@@ -16,6 +21,7 @@ public class LoginFilter implements Filter {
 
     private final String METHOD_GET = "GET";
     private final String METHOD_POST = "POST";
+    private final Map<String, String> errorMessages = new HashMap<>();
 
     private final UserService userService = UserServiceImpl.getInstance();
 
@@ -31,6 +37,10 @@ public class LoginFilter implements Filter {
                 chain.doFilter(req, resp);
                 HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
                 httpServletResponse.sendRedirect(httpServletRequest.getContextPath());
+            }else{
+                errorMessages.put(ERROR_KEY_USERNAME_NOT_FOUND, ERROR_VALUE_USERNAME_NOT_FOUND);
+                req.setAttribute(ATTRIBUTE_NAME_ERRORS, errorMessages);
+                chain.doFilter(req, resp);
             }
 
         }

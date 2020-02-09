@@ -5,6 +5,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.mail.dimaushenko.constants.DefaultRoles;
 import static ru.mail.dimaushenko.constants.LogConstants.LOG_DATABASE_CREATED;
 import static ru.mail.dimaushenko.constants.LogConstants.LOG_TABLE_ROLE_CREATED;
 import static ru.mail.dimaushenko.constants.LogConstants.LOG_TABLE_ROLE_REMOVED;
@@ -88,12 +89,12 @@ public class ContextListner implements ServletContextListener {
 
     private void addRoles() {
         AddRoleDTO adminRole = new AddRoleDTO();
-        adminRole.setName("ADMIN");
-        adminRole.setDescription("ADMIN");
+        adminRole.setName(DefaultRoles.ADMIN.name());
+        adminRole.setDescription(DefaultRoles.ADMIN.getDescripton());
         roleService.addRole(adminRole);
         AddRoleDTO userRole = new AddRoleDTO();
-        userRole.setName("USER");
-        userRole.setDescription("USER");
+        userRole.setName(DefaultRoles.USER.name());
+        userRole.setDescription(DefaultRoles.USER.getDescripton());
         roleService.addRole(userRole);
     }
 

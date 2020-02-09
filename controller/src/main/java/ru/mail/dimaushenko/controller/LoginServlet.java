@@ -5,6 +5,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import static ru.mail.dimaushenko.constants.AttributeConstants.ATTRIBUTE_NAME_ERRORS;
 import static ru.mail.dimaushenko.constants.AttributeConstants.SESSION_ATTRIBUTE_USER;
 import static ru.mail.dimaushenko.constants.Pages.PAGE_LOGIN;
 import ru.mail.dimaushenko.service.model.GetUserDTO;
@@ -21,14 +22,17 @@ public class LoginServlet extends ManagerServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        GetUserDTO getUserDTO = getuserDTO(req);
-        UserDTO userDTO = userService.getUserAuthenticated(getUserDTO);
+        if (req.getAttribute(ATTRIBUTE_NAME_ERRORS) == null) {
+            GetUserDTO getUserDTO = getuserDTO(req);
+            UserDTO userDTO = userService.getUserAuthenticated(getUserDTO);
 
-        if (userDTO != null) {
-            SessionUserDTO sessionUserDTO = convertUserDTOToSessionConvertDTO(userDTO);
-            HttpSession session = req.getSession();
-            session.setAttribute(SESSION_ATTRIBUTE_USER, sessionUserDTO);
-//            forward(req, resp);
+            if (userDTO != null) {
+                SessionUserDTO sessionUserDTO = convertUserDTOToSessionConvertDTO(userDTO);
+                HttpSession session = req.getSession();
+                session.setAttribute(SESSION_ATTRIBUTE_USER, sessionUserDTO);
+            }
+        }else{
+            doGet(req, resp);
         }
 
     }

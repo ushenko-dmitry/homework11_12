@@ -14,7 +14,7 @@ public class PropertyUtilConstantsImpl implements PropertyUtil {
 
     private static PropertyUtilConstantsImpl instance = null;
 
-    private static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     private PropertyUtilConstantsImpl() {
     }
@@ -32,7 +32,7 @@ public class PropertyUtilConstantsImpl implements PropertyUtil {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(CONSTANTS_PROPERTY)) {
             properties.load(is);
         } catch (IOException ex) {
-            LOGGER.error(ex.getMessage(), ex);
+            logger.error(ex.getMessage(), ex);
         }
         return properties.getProperty(propertyName);
     }

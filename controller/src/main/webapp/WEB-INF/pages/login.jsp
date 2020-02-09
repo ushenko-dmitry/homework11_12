@@ -9,10 +9,10 @@
     <body>
         <h1>Log In</h1>
         <form method="POST" action="/homework11_12/login">
-            <input type="text" name="username" placeholder="username"/><br/>
+            <input type="text" name="username" placeholder="username"/><p>${errors["userNotFound"]}</p><br/>
             <input type="password" name="password" placeholder="password"/><br/>
             <input type="submit" name="login" value="Log In"/><br/>
-            <a href="<c:url value="/signin"/>">Sign In</a>
+            <a href="<c:url value="/signin"/>"><input type="button" value="Sign In"/></a>
         </form>
     </body>
 </html>
